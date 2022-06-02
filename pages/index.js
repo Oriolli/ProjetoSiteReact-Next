@@ -1,3 +1,5 @@
+import React from 'react';
+import axios from 'axios';
 import Head from 'next/head';
 
 import Menu from '../components/Menu';
@@ -11,17 +13,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 library.add(fas);
 
-function Home() {
-  return (
-    <div>
-      <Head>
-        <title>Home - Celke</title>
-        <meta name="description" content="Site de ... sobre ..." />
-        <meta name="author" content="Celke" />
-      </Head>
-      <Menu />
-      <Jumbotron fluid className="servicos">
-        <style>{`.servicos{
+const Home = (data) => (
+  <div>
+    <Head>
+      <title>Home - Celke</title>
+      <meta name="description" content="Site de ... sobre ..." />
+      <meta name="author" content="Celke" />
+    </Head>
+    <Menu />
+    <Jumbotron fluid className="servicos">
+      <style>{`.servicos{
                     padding-top: 80px;
                     padding-bottom: 80px;
                     background-color: #000;
@@ -39,55 +40,43 @@ function Home() {
                     margin: 0 auto !important;
                     float: none !important;
                 }`}</style>
-        <Container className="text-center">
-          <div>
-            <h1 className="display-4">Serviços da Empresa</h1>
-            <p className="lead pb-4">
-              Temos a solução que a sua empresa precisa!
-            </p>
+      <Container className="text-center">
+        <div>
+          <h1 className="display-4">{data.response.titulo}</h1>
+          <p className="lead pb-4">{data.response.subtitulo}</p>
+        </div>
+        <div className="row">
+          <div className="col-lg-4">
+            <div className="rounded-circle circulo centralizar">
+              <FontAwesomeIcon icon={data.response.servUmIcone} />
+            </div>
+            <h2 className="mt-4 mb-4">{data.response.servUmTitulo}</h2>
+            <p>{data.response.servUmDescricao}</p>
           </div>
-          <div class="row">
-            <div class="col-lg-4">
-              <div className="rounded-circle circulo centralizar">
-                <FontAwesomeIcon icon="dolly" />
-              </div>
-              <h2 className="mt-4 mb-4">Serviços 1</h2>
-              <p>
-                Donec sed odio dui. Etiam porta sem malesuada magna mollis
-                euismod. Nullam id dolor id nibh ultricies vehicula ut id elit.
-                Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-                Praesent commodo cursus magna.
-              </p>
+          <div className="col-lg-4">
+            <div className="rounded-circle circulo centralizar">
+              <FontAwesomeIcon icon={data.response.servDoisIcone} />
             </div>
-            <div class="col-lg-4">
-              <div className="rounded-circle circulo centralizar">
-                <FontAwesomeIcon icon="project-diagram" />
-              </div>
-              <h2 className="mt-4 mb-4">Serviços 2</h2>
-              <p>
-                Duis mollis, est non commodo luctus, nisi erat porttitor ligula,
-                eget lacinia odio sem nec elit. Cras mattis consectetur purus
-                sit amet fermentum. Fusce dapibus, tellus ac cursus commodo,
-                tortor mauris condimentum nibh.
-              </p>
-            </div>
-            <div class="col-lg-4">
-              <div className="rounded-circle circulo centralizar">
-                <FontAwesomeIcon icon="dolly-flatbed" />
-              </div>
-              <h2 className="mt-4 mb-4">Serviços 3</h2>
-              <p>
-                Donec sed odio dui. Cras justo odio, dapibus ac facilisis in,
-                egestas eget quam. Vestibulum id ligula porta felis euismod
-                semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-                condimentum nibh, ut fermentum massa justo sit amet risus.
-              </p>
-            </div>
+            <h2 className="mt-4 mb-4">{data.response.servDoisTitulo}</h2>
+            <p>{data.response.servDoisDescricao}</p>
           </div>
-        </Container>
-      </Jumbotron>
-    </div>
-  );
-}
+          <div className="col-lg-4">
+            <div className="rounded-circle circulo centralizar">
+              <FontAwesomeIcon icon={data.response.servTresIcone} />
+            </div>
+            <h2 className="mt-4 mb-4">{data.response.servTresTitulo}</h2>
+            <p>{data.response.servTresDescricao}</p>
+          </div>
+        </div>
+      </Container>
+    </Jumbotron>
+  </div>
+);
+
+Home.getInitialProps = async () => {
+  var response = await axios.get('http://localhost:8080/home');
+  //console.log(response.data);
+  return { response: response.data };
+};
 
 export default Home;
